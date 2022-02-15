@@ -6,8 +6,9 @@ Tetris game in Modern JavaScript.
 
 - levels
 - high scores
+- design
 
 
 ## In Future
 
-- design
+- Table of players

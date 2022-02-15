@@ -4,33 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TETRISv2</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.png">
     <link 
   href="https://fonts.googleapis.com/css?family=Press+Start+2P" 
   rel="stylesheet"
 />
 </head>
-<body>
-    
+<body> 
+    <div class="namegame">
+      <h1 class="title">TETRIS</h1>
+      <p class="subtitle">legendary game</p>
+    </div>
+      
     <div class="grid">
-        <canvas id="board" class="game-board"></canvas>
+        <div class="left-column">
+          <p>Level: <span id="level">0</span></p>
+          <canvas id="board" class="game-board"></canvas>
+        </div>
         <div class="right-column">
           <div>
-            <h1>TETRIS</h1>
-            <p>Score: <span id="score">0</span></p>
-            <p>Lines: <span id="lines">0</span></p>
-            <p>Level: <span id="level">0</span></p>
-            <canvas id="next" class="next"></canvas>
+            <div class="box-statis">
+              <p>Score: <span id="score">0</span></p>
+              <p>Lines: <span id="lines">0</span></p>
+            </div>
+            <div class="box-next">
+              <p>next</p>
+              <div class="box-canvas">
+                <canvas id="next" class="next"></canvas>
+              </div>
+            </div>
           </div>
           <button onclick="play()" class="play-button">Play</button>
         </div>
       </div>
 
 
+      <div class="bg"></div>
 
-
-
+    <!-- background -->
+    <script src="js/bg/background.js"></script>
+    <!-- game -->
     <script src="js/constants.js"></script>
     <script src="js/board.js"></script>
     <script src="js/piece.js"></script>

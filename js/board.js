@@ -17,6 +17,7 @@ class Board {
     getNewPiece() {
         this.next = new Piece(this.ctxNext);
         this.ctxNext.clearRect(0, 0, this.ctxNext.canvas.width, this.ctxNext.canvas.height);
+        
         this.next.draw();
     }
 
@@ -27,26 +28,28 @@ class Board {
         )
     }
 
-    rotate(p) {
+    rotate(p, direction) {
         let clone = JSON.parse(JSON.stringify(p));
-
-        for(let y = 0; y < p.shape.length; ++y) {
-            for(let x = 0; x < y; ++x) {
-                [p.shape[x][y], p.shape[y][x]] =
-                [p.shape[y][x], p.shape[x][y]];
+        if(!p.hardDropped) {
+            for(let y = 0; y < clone.shape.length; ++y) {
+                for(let x = 0; x < y; ++x) {
+                    [clone.shape[x][y], clone.shape[y][x]] =
+                    [clone.shape[y][x], clone.shape[x][y]];
+                }
             }
         }
-
-        p.shape.forEach(row => row.reverse());
+        if(direction === ROTATION.RIGHT) {
+            clone.shape.forEach(row => row.reverse());
+        } else if(direction === ROTATION.LEFT) {
+            clone.shape.reverse();
+        }
         return clone;
     }
 
-    insideWalls(x) {
-        return x >= 0 && x < COLS;
-    }
 
-    aboveFloor(y) {
-        return y <= ROWS;
+
+    aboveFloor(x,y) {
+        return y <= ROWS && x >= 0 && x < COLS;
     }
 
     notOccupied(x, y) {
@@ -59,7 +62,7 @@ class Board {
                 let x = p.x + dx;
                 let y = p.y + dy;
                 return (value === 0 ||
-                      (this.insideWalls(x) && this.aboveFloor(y) && this.notOccupied(x, y))
+                      (this.aboveFloor(x, y) && this.notOccupied(x, y))
                       );
             })
         })
@@ -74,8 +77,13 @@ class Board {
         this.grid.forEach((row, y) => {
             row.forEach((value, x) => {
                 if(value > 0) {
-                    this.ctx.fillStyle = COLORS[value];
+                    console.log(value)
+                    this.ctx.fillStyle = COLORS[value][0];
                     this.ctx.fillRect(x,y,1,1);
+                    this.ctx.fillStyle = COLORS[value][1];
+                    this.ctx.fillRect(x + .1,y + .1, .8, .8);
+                    this.ctx.fillStyle = COLORS[value][2];
+                    this.ctx.fillRect(x + .2, y + .2, .6, .6);
                 }
             })
         })
@@ -98,7 +106,6 @@ class Board {
         } else {
             this.freeze();
             this.clearLines();
-            console.table(this.grid);
             
             if(this.piece.y === 0) {
                 // Конец игры
@@ -122,7 +129,7 @@ class Board {
                                 lines === 4 ? POINTS.TETRIS :
                                 0;
         
-        return (level + 1) * lineClearPoints
+        return (account.level + 1) * lineClearPoints
     }
 
     clearLines() {
