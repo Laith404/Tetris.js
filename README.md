@@ -12,3 +12,5 @@ Tetris game in Modern JavaScript.
 ## In Future
 
 - Table of players
+
+[image]("https://raw.githubusercontent.com/Laith404/Tetris.js/master/assets/image-screen.png")
