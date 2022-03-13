@@ -58,8 +58,12 @@ let account = new Proxy(accountValues, {
 
 function play() {
     addEventListenerKey();
-    resetGame();
+    if (document.querySelector('#play-btn').style.display == '') {
+        resetGame();
+    }
     animate();
+    document.querySelector('#play-btn').style.display = 'none';
+    document.querySelector('#pause-btn').style.display = 'block';
 }
 
 function gameOver() {
@@ -87,6 +91,9 @@ function addEventListenerKey() {
 }
 
 function handleKeyPress(event) {
+    if(event.keyCode === KEY.P) {
+        pause();
+    }
     if(event.keyCode === KEY.ESC) {
         gameOver();
     } else if(moves[event.keyCode]) {
@@ -105,11 +112,32 @@ function handleKeyPress(event) {
             board.piece.hardDrop();
         } else if(board.valid(p)) {
             board.piece.move(p);
-            if(event.keyCode === KEY.DOWN) {
+            if(event.keyCode === KEY.DOWN && 
+                document.querySelector('#pause-btn').style.display === 'block') {
                 account.score += POINTS.SOFT_DROP;
             }
         }
     }
+}
+
+function pause() {
+    if(!requestId) {
+        document.querySelector('#play-btn').style.display = 'none';
+        document.querySelector('#pause-btn').style.display = 'block';
+        animate();
+        return;
+    }
+    cancelAnimationFrame(requestId);
+    requestId = null;
+
+    ctx.fillStyle = 'rgba(15,21,24,.85)';
+    ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+    ctx.font = 'bold 1px Arial';
+    ctx.fillStyle = 'blue'; // Временно
+    ctx.fillText("PAUSED", 3, 10);
+    document.querySelector('#play-btn').style.display = 'block';
+    document.querySelector('#pause-btn').style.display = 'none';
+    
 }
 
 function animate(now = 0) {

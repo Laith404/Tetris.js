@@ -9,7 +9,8 @@ const KEY = {
     LEFT: 37,
     RIGHT: 39,
     DOWN: 40,
-    ESC: 27
+    ESC: 27,
+    P: 80,
 }
 
 const COLORS = [
@@ -28,7 +29,7 @@ const POINTS = {
     TRIPLE: 500,
     TETRIS: 800,
     SOFT_DROP: 1,
-    HARD_DROP: 2
+    HARD_DROP: 4
 }
 
 
